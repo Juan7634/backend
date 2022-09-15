@@ -12,7 +12,7 @@ const createUser = async (req, res = response) => {
     
     try{
 
-        const result = await conexion.query('SELECT * FROM users WHERE username = ?', [username]);
+        const result = await conexion.query('SELECT * FROM usuarios_sistemas WHERE username = ?', [username]);
 
         if(result.length > 0){
             return res.status(400).json({
@@ -36,7 +36,7 @@ const createUser = async (req, res = response) => {
 
 
         //Insertar en la base de datos
-        await conexion.query('INSERT INTO users SET ?', [newUser]);
+        await conexion.query('INSERT INTO usuario SET ?', [newUser]);
 
         //Generar JWT
         const token = await generarJWT('1',newUser.name);
@@ -66,7 +66,7 @@ const loginUsuario = async (req, res) => {
     try{
 
         //Verificar si el username existe
-        const result = await conexion.query('SELECT * FROM users WHERE username = ?', [username]);
+        const result = await conexion.query('SELECT * FROM usuarios_sistema WHERE username = ?', [username]);
 
         if(result.length == 0){
             return res.status(400).json({
