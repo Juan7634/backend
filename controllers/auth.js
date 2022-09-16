@@ -79,8 +79,8 @@ const createUser = async (req, res = response) => {
         await conexion.query('INSERT INTO usuarios_sistema SET ?', [usuarioS]);
 
         resultado = await conexion.query('SELECT MAX(id_usuario) AS id FROM usuarios_sistema');
-        console.log(resultado[0].id);
         //Generar JWT
+
         const token = await generarJWT(resultado[0].id,personas.nombre);
     
         res.status(201).json({
@@ -107,6 +107,7 @@ const loginUsuario = async (req, res) => {
 
         //Verificar si el username existe
         const result = await conexion.query('SELECT * FROM usuarios_sistema WHERE username = ?', [username]);
+        
 
         if(result.length == 0){
             return res.status(400).json({
@@ -126,17 +127,16 @@ const loginUsuario = async (req, res) => {
             });
         }
 
-
+        const person = await conexion.query('SELECT nombre FROM personas AS p, empleados AS em, usuarios_sistema AS us WHERE p.id_persona = em.id_persona AND em.idEmpleados = ?',[result[0].id_empleado]);
         //Generar JWT
-         
-         const token = await generarJWT(result[0].id,result[0].name);
+         const token = await generarJWT(result[0].id_usuario,person[0].nombre);
 
 
 
         res.send({
             message: 'Se ha logeado',
             ok: true,
-            id: result[0].id,
+            id: result[0].id_usuario,
             token
     
         });
