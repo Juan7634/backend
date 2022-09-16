@@ -5,14 +5,28 @@ const {generarJWT} = require('../helpers/jwt');
 
 
 const createUser = async (req, res = response) => {
-    const {name, last_name, avatar, username, password} = req.body;
-    // const data = req.body;
-    // console.log(data);
+    const { 
+        nombre, 
+        apellido1,
+        apellido2,
+        CP,
+        numero,
+        ciudad,
+        estado,
+        pais,
+        telefono,
+        puesto,
+        sueldo,
+        fecha_contratacion,
+        fecha_cumpleaños,
+        username,
+        password} = req.body;
+    
 
     
     try{
 
-        const result = await conexion.query('SELECT * FROM usuarios_sistemas WHERE username = ?', [username]);
+        const result = await conexion.query('SELECT * FROM usuarios_sistema WHERE username = ?', [username]);
 
         if(result.length > 0){
             return res.status(400).json({
@@ -20,28 +34,54 @@ const createUser = async (req, res = response) => {
                 message: 'El usuario ya existe'
             });
         }
-                
+        
+        const personas = {
+            nombre, 
+            apellido1,
+            apellido2,
+            CP,
+            numero,
+            ciudad,
+            estado,
+            pais,
+            telefono:'4311084195'
+        }
 
-        const newUser = {
-            name, 
-            last_name,
-            avatar, 
+        //console.log(personas);
+        let resultado;
+
+
+        //Insertar a la persona a la base de datos
+        await conexion.query('INSERT INTO personas SET ?',[personas]);
+        resultado = await conexion.query('SELECT MAX(id_persona) AS id FROM personas');
+        //console.log(resultado[0].id);
+        const empleado = {
+            puesto,
+            sueldo,
+            fecha_contratacion,
+            fecha_cumpleaños,
+            id_persona: resultado[0].id
+        };
+
+        await conexion.query('INSERT INTO empleados SET ?',[empleado],);
+
+        resultado = await conexion.query('SELECT MAX(idEmpleados) AS id FROM empleados');
+        const usuarioS = {
+            id_empleado: resultado[0].id,
             username,
             password
-        };
+        }
 
         //Encriptar la contraseña
         const salt = bcrypt.genSaltSync();
-        newUser.password = bcrypt.hashSync(password, salt);
-
-
+        usuarioS.password = bcrypt.hashSync(password, salt);
         //Insertar en la base de datos
-        await conexion.query('INSERT INTO usuario SET ?', [newUser]);
+        await conexion.query('INSERT INTO usuarios_sistema SET ?', [usuarioS]);
 
+        resultado = await conexion.query('SELECT MAX(id_usuario) AS id FROM usuarios_sistema');
+        console.log(resultado[0].id);
         //Generar JWT
-        const token = await generarJWT('1',newUser.name);
-
-
+        const token = await generarJWT(resultado[0].id,personas.nombre);
     
         res.status(201).json({
             ok: true,

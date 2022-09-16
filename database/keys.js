@@ -3,7 +3,7 @@
         host: 'localhost',
         user: 'root',
         password: 'javascript',
-        database: 'personal'
+        database: 'jewlry_dany'
     }
 
 }

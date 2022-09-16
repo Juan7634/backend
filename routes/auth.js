@@ -14,9 +14,16 @@ const router = Router();
 router.post(
     '/new',
     [
-        check('name', 'El nombre es obligatorio').not().isEmpty(),
-        check('last_name', 'El apellido es obligatorio').not().isEmpty(),
-        check('avatar', 'La url de la imagen es obligatoria').not().isEmpty(),
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('apellido1', 'El apellido paterno es obligatorio es obligatorio').not().isEmpty(),
+        check('apellido2', 'El apellido paterno es obligatorio es obligatorio').not().isEmpty(),
+        check('CP','El codigo postal es obligatorio').not().isEmpty(),
+        check('numero','El numero de la vivienda es obligatorio').not().isEmpty(),
+        check('ciudad','El nombre de la ciudad es obligatorio').not().isEmpty(),
+        check('estado', 'El nombre del estado es obligatorio').not().isEmpty(),
+        check('pais','El nombre del pais es obligatorio').not().isEmpty(),
+        check('puesto','El nombre del puesto es obligatorio').not().isEmpty(),
+        check('sueldo','El sueldo es un campo obligatorio').not().isEmpty(),
         check('username', 'El nombre de usuario es obligatorio').not().isEmpty(),
         check('password', 'La contraseña es obligatoria').not().isEmpty().isLength({min: 6})
     ], //Validaciones
