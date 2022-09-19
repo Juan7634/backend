@@ -139,7 +139,8 @@ const loginUsuario = async (req, res) => {
             message: 'Se ha logeado',
             ok: true,
             id: result[0].id_usuario,
-            token
+            token,
+            rol: result[0].rol
     
         });
     }catch(e){
