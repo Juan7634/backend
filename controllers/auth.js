@@ -64,10 +64,11 @@ const createUser = async (req, res = response) => {
         };
 
         await conexion.query('INSERT INTO empleados SET ?',[empleado],);
-
+        const rol = 'user'
         resultado = await conexion.query('SELECT MAX(idEmpleados) AS id FROM empleados');
         const usuarioS = {
             id_empleado: resultado[0].id,
+            rol,
             username,
             password
         }
@@ -86,7 +87,8 @@ const createUser = async (req, res = response) => {
         res.status(201).json({
             ok: true,
             message: 'Usuario creado',
-            token: token
+            token: token,
+            role
         });
     }catch(e){
         console.log(e);
