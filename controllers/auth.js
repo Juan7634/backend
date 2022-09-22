@@ -64,11 +64,11 @@ const createUser = async (req, res = response) => {
         };
 
         await conexion.query('INSERT INTO empleados SET ?',[empleado],);
-        const rol = 'user'
+        const role = 'user'
         resultado = await conexion.query('SELECT MAX(idEmpleados) AS id FROM empleados');
         const usuarioS = {
             id_empleado: resultado[0].id,
-            rol,
+            role,
             username,
             password
         }
@@ -140,7 +140,7 @@ const loginUsuario = async (req, res) => {
             ok: true,
             id: result[0].id_usuario,
             token,
-            rol: result[0].rol
+            role: result[0].role
     
         });
     }catch(e){
