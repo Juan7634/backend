@@ -15,7 +15,9 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.json());
 app.use('/api/auth',require('./routes/auth'));
-app.use('/api/events',require('./routes/events'));
+// app.use('/api/events',require('./routes/events'));
+app.use('/api/categories',require('./routes/categories'));
+app.use('/api/products',require('./routes/product'));
 
 
 app.listen(process.env.PORT, () => {

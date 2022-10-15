@@ -8,14 +8,19 @@ const {Router} = require('express');
 const router = Router();
 
 const {validarJWT} = require('../middlewares/validar-jwt');
-
-
+const {
+    getProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct
+    } = require('../controllers/product');
+ 
 router.use(validarJWT);
 
 
-router.get('/',);
-router.post('/add',);
-router.put('/update',);
-router.delete('/delete',);
+router.get('/',getProducts);
+router.post('/add',createProduct);
+router.put('/update/:id',updateProduct);
+router.delete('/delete/:id',deleteProduct);
 
 module.exports = router;
