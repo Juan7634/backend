@@ -33,19 +33,23 @@ const getProducts = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-    const {id_empleado,nombre_producto,precio,stock, id_proveedor} = req.body;
+    const {id_usuario,nombre_producto,precio,stock, id_proveedor} = req.body;
 
-    console.log(nombre_producto);
+   // console.log(nombre_producto);
     try{
 
+       
+
+        const {id_Empleado} = await conexion.query('SELECT id_Empleado FROM usuarios_sistema WHERE id_usuario = ?',[id_usuario]);
+
+       
         const product = {
             nombre_producto,
             precio,
             stock,
             id_proveedor,
-            id_empleado
+            id_empleado: id_Empleado
         }
-
 
         await conexion.query('INSERT INTO Productos SET ?',[product]);
         
