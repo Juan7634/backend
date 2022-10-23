@@ -5,22 +5,7 @@ const {generarJWT} = require('../helpers/jwt');
 
 
 const createUser = async (req, res = response) => {
-    const { 
-        nombre, 
-        apellido1,
-        apellido2,
-        CP,
-        numero,
-        ciudad,
-        estado,
-        pais,
-        telefono,
-        puesto,
-        sueldo,
-        fecha_contratacion,
-        fecha_cumpleaños,
-        username,
-        password} = req.body;
+    const {id, username,password,role} = req.body;
     
 
     
@@ -31,48 +16,20 @@ const createUser = async (req, res = response) => {
         if(result.length > 0){
             return res.status(400).json({
                 ok: false,
-                message: 'El usuario ya existe'
+                message: 'El usuario ya existe',
+                type:1
             });
         }
         
-        const personas = {
-            nombre, 
-            apellido1,
-            apellido2,
-            CP,
-            numero,
-            ciudad,
-            estado,
-            pais,
-            telefono:'4311084195'
-        }
-
-        //console.log(personas);
-        let resultado;
-
-
-        //Insertar a la persona a la base de datos
-        await conexion.query('INSERT INTO personas SET ?',[personas]);
-        resultado = await conexion.query('SELECT MAX(id_persona) AS id FROM personas');
-        //console.log(resultado[0].id);
-        const empleado = {
-            puesto,
-            sueldo,
-            fecha_contratacion,
-            fecha_cumpleaños,
-            id_persona: resultado[0].id
-        };
-
-        await conexion.query('INSERT INTO empleados SET ?',[empleado],);
-        const role = 'user'
-        resultado = await conexion.query('SELECT MAX(idEmpleados) AS id FROM empleados');
         const usuarioS = {
-            id_empleado: resultado[0].id,
-            role,
+            id_empleado: id,
             username,
-            password
+            password,
+            role,
+
         }
 
+        let resultado = '';
         //Encriptar la contraseña
         const salt = bcrypt.genSaltSync();
         usuarioS.password = bcrypt.hashSync(password, salt);
@@ -80,21 +37,27 @@ const createUser = async (req, res = response) => {
         await conexion.query('INSERT INTO usuarios_sistema SET ?', [usuarioS]);
 
         resultado = await conexion.query('SELECT MAX(id_usuario) AS id FROM usuarios_sistema');
+
+        const nombre = await conexion.query('SELECT p.nombre FROM personas p, empleados e WHERE p.id_persona = e.id_persona AND e.idEmpleados = ?',[id])
+
+        console.log(nombre[0].nombre);
         //Generar JWT
 
-        const token = await generarJWT(resultado[0].id,personas.nombre);
+        const token = await generarJWT(resultado[0].id,nombre[0].nombre);
     
         res.status(201).json({
             ok: true,
             message: 'Usuario creado',
             token: token,
-            role
+            role,
+            type:2
         });
     }catch(e){
         console.log(e);
         res.status(500).json({
-            message: 'Error al crear el usuario',
-            ok: false
+            message: 'Hable con el administrador',
+            ok: false,
+            type:3
         });
     }
 
