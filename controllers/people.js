@@ -108,7 +108,7 @@ const createPeople = async (req, res) => {
             ok: true,
             message: 'Registro completado',
             type:2,
-            id: resultado
+            id: resultado[0].id
         });
     }catch(e){
         console.log(e);
