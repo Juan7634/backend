@@ -40,7 +40,7 @@ app.use('/api/users',require('./routes/users'));
 
 
 app.listen(process.env.PORT, () => {
-    console.log('Servidor corriendo en el puerto 4000');
+    console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
 });
 
 
