@@ -3,22 +3,27 @@ const conexion = require('../database/config');
 
 
 const getProducts = async (req, res) => {
+    const id = req.header('id');
     try{
 
         const products = await conexion.query('SELECT * FROM Productos');
-         
+        const user = await conexion.query('SELECT role FROM usuarios_sistema WHERE id_usuario = ?',[id]);
+        
         if(products.length == 0){
             return res.status(201).json({
-                ok: false,
+                ok: true,
                 msg: 'No products found',
-                found:0
+                role:user[0].role,
+                type:1
+
             });
         }
 
         res.status(201).json({
             ok:true,
             products,
-            found:1
+            role:user,
+            type:2
         });
 
     }catch(e){
@@ -26,7 +31,7 @@ const getProducts = async (req, res) => {
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador',
-            found:2
+            type:3
 
         });
     }
