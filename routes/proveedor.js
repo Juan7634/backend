@@ -4,15 +4,19 @@
 const {Router} = require('express');
 const router = Router();
 
+const {createProveedor,
+    getAllProveedores,
+    getProveedor} = require('../controllers/proveedor');
+
 const {validarJWT} = require('../middlewares/validar-jwt');
 
 
 router.use(validarJWT);
 
-router.get('/');
-router.post('/add', );
-router.put('/update',);
-router.delete('/',);
+router.get('/',getAllProveedores);
+router.post('/add', createProveedor);
+// router.put('/update',);
+// router.delete('/',);
 
 
 module.exports = router;

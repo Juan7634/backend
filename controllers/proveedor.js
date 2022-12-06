@@ -17,7 +17,7 @@ const createProveedor = async(req,res)=> {
         res.status(201).json({
             ok: true,
             msg: 'Proveedor has been successfully',
-            found: 1
+            type: 2
         })
 
 
@@ -26,7 +26,7 @@ const createProveedor = async(req,res)=> {
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador',
-            found:2
+            type:3
 
         });
     }
@@ -43,15 +43,15 @@ const getAllProveedores = async(req, res) => {
         if(proveedor.length == 0){
             return res.status(201).json({
                 ok: false,
-                msg: 'No proveedor found',
-                found:0
+                msg: 'No proveedor type',
+                type:1
             });
         }
 
         res.status(201).json({
             ok:true,
             proveedor,
-            found:1
+            type:2
         });
     
     }catch(e){
@@ -59,7 +59,7 @@ const getAllProveedores = async(req, res) => {
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador',
-            found:2
+            type:3
         });
     }
 
@@ -75,15 +75,15 @@ const getProveedor = async(req, res) => {
         if(proveedor.length == 0){
             return res.status(404).json({
                 ok:true, 
-                msg: 'No found proveedor',
-                found: 1
+                msg: 'No type proveedor',
+                type: 1
             });
         }
 
         res.status(201).json({
             ok:true,
             proveedor, 
-            found:2
+            type:2
         });
 
     }catch(e){
@@ -91,8 +91,16 @@ const getProveedor = async(req, res) => {
         res.status(500).json({
             ok:false,
             msg: 'Hable con el administrador',
-            found:2
+            type:3
         });
     }
     
+}
+
+
+
+module.exports = {
+    createProveedor,
+    getAllProveedores,
+    getProveedor
 }

@@ -18,7 +18,7 @@ const {
 router.use(validarJWT);
 
 
-router.get('/',getProducts);
+router.get('/:id',getProducts);
 router.post('/add',createProduct);
 router.put('/update/:id',updateProduct);
 router.delete('/delete/:id',deleteProduct);

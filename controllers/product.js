@@ -3,12 +3,11 @@ const conexion = require('../database/config');
 
 
 const getProducts = async (req, res) => {
-    const id = req.header('id');
+    const id = req.params.id;
     try{
 
         const products = await conexion.query('SELECT * FROM Productos');
         const user = await conexion.query('SELECT role FROM usuarios_sistema WHERE id_usuario = ?',[id]);
-        
         if(products.length == 0){
             return res.status(201).json({
                 ok: true,
@@ -40,12 +39,9 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
     const {id_usuario,nombre_producto,precio,stock, id_proveedor} = req.body;
 
-   // console.log(nombre_producto);
+   
     try{
-
-       
-
-        const {id_Empleado} = await conexion.query('SELECT id_Empleado FROM usuarios_sistema WHERE id_usuario = ?',[id_usuario]);
+        const empleado = await conexion.query('SELECT id_empleado FROM usuarios_sistema WHERE id_usuario = ?',[id_usuario]);
 
        
         const product = {
@@ -53,7 +49,8 @@ const createProduct = async (req, res) => {
             precio,
             stock,
             id_proveedor,
-            id_empleado: id_Empleado
+            id_empleado: empleado[0].id_empleado
+            
         }
 
         await conexion.query('INSERT INTO Productos SET ?',[product]);

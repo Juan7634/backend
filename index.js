@@ -37,6 +37,7 @@ app.use('/api/public',require('./routes/public'));
 app.use('/api/people',require('./routes/people'));
 app.use('/api/employee',require('./routes/employee'));
 app.use('/api/users',require('./routes/users'));
+app.use('/api/purchases',require('./routes/purchases'));
 
 
 app.listen(process.env.PORT, () => {
