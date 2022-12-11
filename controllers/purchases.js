@@ -66,7 +66,7 @@ const getAllPurchase = async (req, res) => {
 }
 
 const createPurchase = async (req, res) => {
-    const {id_usuario,nombre_compra,costo,stock, tipo, descripcion, id_proveedor, cantidad,id_producto} = req.body;
+    const {id_usuario,nombre_compra,costo,stock, tipo, descripcion, id_proveedor,id_producto} = req.body;
 
    
     try{
@@ -77,9 +77,9 @@ const createPurchase = async (req, res) => {
             stock,
             tipo,
             descripcion,
-            cantidad,
             id_proveedor,
-            id_usuario
+            id_usuario,
+            id_producto
         }
 
         await conexion.query('INSERT INTO compras SET ?',[purchase]);
